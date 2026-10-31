@@ -26,10 +26,6 @@ class QuickSwitchBar extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final labelStyle = theme.textTheme.labelMedium ?? const TextStyle();
     final background = highContrast ? MapPalette.panelDark : Colors.transparent;
-    // The selected icon sits on the primary indicator pill, so it uses
-    // onPrimary. The label sits below on the bar background, so it must use a
-    // foreground color that contrasts with the surface (not onPrimary, which
-    // is white-on-white in the light theme).
     final selectedIconColor = highContrast
         ? MapPalette.textPrimary
         : colorScheme.onPrimary;
@@ -40,6 +36,57 @@ class QuickSwitchBar extends StatelessWidget {
         ? MapPalette.textSecondary
         : colorScheme.onSurfaceVariant;
     final indicator = highContrast ? MapPalette.selected : colorScheme.primary;
+
+    final destinations = [
+      NavigationDestination(
+        icon: _buildIconWithBadge(
+          context,
+          const Icon(Icons.people_outline),
+          contactsUnreadCount,
+        ),
+        selectedIcon: _buildIconWithBadge(
+          context,
+          const Icon(Icons.people),
+          contactsUnreadCount,
+        ),
+        label: context.l10n.nav_contacts,
+      ),
+      NavigationDestination(
+        icon: const Icon(Icons.cell_tower),
+        selectedIcon: const Icon(Icons.cell_tower),
+        label: context.l10n.listFilter_repeaters,
+      ),
+      const NavigationDestination(
+        icon: Icon(Icons.meeting_room_outlined),
+        selectedIcon: Icon(Icons.meeting_room),
+        label: 'Rooms',
+      ),
+      NavigationDestination(
+        icon: const Icon(Icons.sensors),
+        selectedIcon: const Icon(Icons.sensors),
+        label: context.l10n.repeater_sensors,
+      ),
+      NavigationDestination(
+        icon: _buildIconWithBadge(
+          context,
+          const Icon(Icons.tag),
+          channelsUnreadCount,
+        ),
+        selectedIcon: _buildIconWithBadge(
+          context,
+          const Icon(Icons.tag),
+          channelsUnreadCount,
+        ),
+        label: context.l10n.nav_channels,
+      ),
+      NavigationDestination(
+        icon: const Icon(Icons.map_outlined),
+        selectedIcon: const Icon(Icons.map),
+        label: context.l10n.nav_map,
+      ),
+    ];
+
+    final safeIndex = selectedIndex.clamp(0, destinations.length - 1);
 
     return SizedBox(
       width: double.infinity,
@@ -78,41 +125,9 @@ class QuickSwitchBar extends StatelessWidget {
               ),
               child: NavigationBar(
                 height: 60,
-                selectedIndex: selectedIndex,
+                selectedIndex: safeIndex,
                 onDestinationSelected: onDestinationSelected,
-                destinations: [
-                  NavigationDestination(
-                    icon: _buildIconWithBadge(
-                      context,
-                      const Icon(Icons.people_outline),
-                      contactsUnreadCount,
-                    ),
-                    selectedIcon: _buildIconWithBadge(
-                      context,
-                      const Icon(Icons.people),
-                      contactsUnreadCount,
-                    ),
-                    label: context.l10n.nav_contacts,
-                  ),
-                  NavigationDestination(
-                    icon: _buildIconWithBadge(
-                      context,
-                      const Icon(Icons.tag),
-                      channelsUnreadCount,
-                    ),
-                    selectedIcon: _buildIconWithBadge(
-                      context,
-                      const Icon(Icons.tag),
-                      channelsUnreadCount,
-                    ),
-                    label: context.l10n.nav_channels,
-                  ),
-                  NavigationDestination(
-                    icon: const Icon(Icons.map_outlined),
-                    selectedIcon: const Icon(Icons.map),
-                    label: context.l10n.nav_map,
-                  ),
-                ],
+                destinations: destinations,
               ),
             ),
           ),

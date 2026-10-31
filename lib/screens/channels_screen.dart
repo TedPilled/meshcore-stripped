@@ -1,3 +1,4 @@
+import '../utils/contact_filter_types.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -354,7 +355,7 @@ class _ChannelsScreenState extends State<ChannelsScreen>
         bottomNavigationBar: SafeArea(
           top: false,
           child: QuickSwitchBar(
-            selectedIndex: 1,
+            selectedIndex: 4,
             onDestinationSelected: (index) =>
                 _handleQuickSwitch(index, context),
             contactsUnreadCount: connector.getTotalContactsUnreadCount(),
@@ -689,15 +690,38 @@ class _ChannelsScreenState extends State<ChannelsScreen>
   }
 
   void _handleQuickSwitch(int index, BuildContext context) {
-    if (index == 1) return;
+    if (index == 4) return;
+    final viewState = context.read<UiViewStateService>();
     switch (index) {
       case 0:
+        viewState.setContactsTypeFilter(ContactTypeFilter.users);
+        Navigator.pushReplacement(
+          context,
+          buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
+        );
+        break;
+      case 1:
+        viewState.setContactsTypeFilter(ContactTypeFilter.repeaters);
         Navigator.pushReplacement(
           context,
           buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
         );
         break;
       case 2:
+        viewState.setContactsTypeFilter(ContactTypeFilter.rooms);
+        Navigator.pushReplacement(
+          context,
+          buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
+        );
+        break;
+      case 3:
+        viewState.setContactsTypeFilter(ContactTypeFilter.sensors);
+        Navigator.pushReplacement(
+          context,
+          buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
+        );
+        break;
+      case 5:
         Navigator.pushReplacement(
           context,
           buildQuickSwitchRoute(const MapScreen(hideBackButton: true)),

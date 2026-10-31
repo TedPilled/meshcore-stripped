@@ -693,6 +693,8 @@ class _DiscoveryScreenState extends State<DiscoveryScreen> {
         return contact.type == advTypeRepeater;
       case ContactTypeFilter.rooms:
         return contact.type == advTypeRoom;
+      case ContactTypeFilter.sensors:
+        return contact.type == advTypeSensor;
       case ContactTypeFilter.favorites:
         // Not offered by the discovery filter menu.
         return true;

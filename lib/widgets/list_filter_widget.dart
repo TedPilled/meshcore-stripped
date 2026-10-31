@@ -178,6 +178,11 @@ class ContactsFilterMenu extends StatelessWidget {
               checked: typeFilter == ContactTypeFilter.rooms,
             ),
             SortFilterMenuOption(
+              value: _TypeFilterAction(ContactTypeFilter.sensors),
+              label: l10n.repeater_sensors,
+              checked: typeFilter == ContactTypeFilter.sensors,
+            ),
+            SortFilterMenuOption(
               value: const _ToggleUnreadAction(),
               label: l10n.listFilter_unreadOnly,
               checked: showUnreadOnly,
@@ -270,6 +275,11 @@ class DiscoveryContactsFilterMenu extends StatelessWidget {
               value: _DiscoveryTypeFilterAction(ContactTypeFilter.rooms),
               label: l10n.listFilter_roomServers,
               checked: typeFilter == ContactTypeFilter.rooms,
+            ),
+            SortFilterMenuOption(
+              value: _DiscoveryTypeFilterAction(ContactTypeFilter.sensors),
+              label: l10n.repeater_sensors,
+              checked: typeFilter == ContactTypeFilter.sensors,
             ),
           ],
         ),

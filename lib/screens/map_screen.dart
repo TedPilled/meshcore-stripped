@@ -1077,7 +1077,7 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
             bottomNavigationBar: SafeArea(
               top: false,
               child: QuickSwitchBar(
-                selectedIndex: 2,
+                selectedIndex: 5,
                 onDestinationSelected: (index) =>
                     _handleQuickSwitch(index, context),
                 contactsUnreadCount: connector.getTotalContactsUnreadCount(),
@@ -3010,15 +3010,38 @@ class _MapScreenState extends State<MapScreen> with DisconnectNavigationMixin {
   }
 
   void _handleQuickSwitch(int index, BuildContext context) {
-    if (index == 2) return;
+    if (index == 5) return;
+    final viewState = context.read<UiViewStateService>();
     switch (index) {
       case 0:
+        viewState.setContactsTypeFilter(ContactTypeFilter.users);
         Navigator.pushReplacement(
           context,
           buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
         );
         break;
       case 1:
+        viewState.setContactsTypeFilter(ContactTypeFilter.repeaters);
+        Navigator.pushReplacement(
+          context,
+          buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
+        );
+        break;
+      case 2:
+        viewState.setContactsTypeFilter(ContactTypeFilter.rooms);
+        Navigator.pushReplacement(
+          context,
+          buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
+        );
+        break;
+      case 3:
+        viewState.setContactsTypeFilter(ContactTypeFilter.sensors);
+        Navigator.pushReplacement(
+          context,
+          buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
+        );
+        break;
+      case 4:
         Navigator.pushReplacement(
           context,
           buildQuickSwitchRoute(const ChannelsScreen(hideBackButton: true)),

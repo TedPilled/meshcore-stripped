@@ -36,7 +36,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
+  cupertino_icons: ^2.0.0
   flutter_blue_plus: ^2.3.14
   # Vendored from MeshEnvy/flserial e1864de. Linux SerialThread waits
   # until fl_set_callback is installed so a port that transmits on open
@@ -48,14 +48,14 @@ dependencies:
   shared_preferences: ^2.2.2
   uuid: ^4.3.3
   flutter_map: ^8.3.2
-  latlong2: ^0.9.1
+  latlong2: ^0.10.1
   flutter_local_notifications: ^22.3.1
   crypto: ^3.0.3
   pointycastle: ^4.0.0
   http: ^1.2.0
-  cached_network_image: ^3.4.1
+  cached_network_image: ^4.0.6
   flutter_cache_manager: ^3.4.5
-  flutter_foreground_task: ^9.2.0
+  flutter_foreground_task: ^11.0.3
   characters: ^1.4.0
   package_info_plus: ^10.2.2
   mobile_scanner: ^7.4.2  # QR/barcode scanning
@@ -67,14 +67,14 @@ dependencies:
   path_provider: ^2.1.5
   file_selector: ^1.0.3   # desktop save dialog for GPX export
   share_plus: ^13.3.1
-  build_pipe: ^0.3.1
+  build_pipe: ^0.4.1
   material_symbols_icons: ^4.2928.1
   web: ^1.1.1
   flutter_svg: ^2.0.10+1
   flutter_blue_plus_platform_interface: ^9.0.2
   ml_algo: ^16.0.0
   ml_dataframe: ^1.0.0
-  llamadart: ^0.8.0
+  llamadart: ^0.17.0
   flutter_langdetect: ^0.0.1
   cryptography: ^2.9.0
   cryptography_flutter: ^2.3.4

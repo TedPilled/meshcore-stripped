@@ -1,3 +1,5 @@
+import '../services/ui_view_state_service.dart';
+import '../utils/contact_filter_types.dart';
 import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
@@ -452,7 +454,7 @@ class _LineOfSightMapScreenState extends State<LineOfSightMapScreen> {
       bottomNavigationBar: SafeArea(
         top: false,
         child: QuickSwitchBar(
-          selectedIndex: 2,
+          selectedIndex: 5,
           onDestinationSelected: (index) => _handleQuickSwitch(index, context),
           contactsUnreadCount: context
               .watch<MeshCoreConnector>()
@@ -1728,18 +1730,41 @@ class _LineOfSightMapScreenState extends State<LineOfSightMapScreen> {
   }
 
   void _handleQuickSwitch(int index, BuildContext context) {
-    if (index == 2) {
+    if (index == 5) {
       Navigator.pop(context);
       return;
     }
+    final viewState = context.read<UiViewStateService>();
     switch (index) {
       case 0:
+        viewState.setContactsTypeFilter(ContactTypeFilter.users);
         Navigator.pushReplacement(
           context,
           buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
         );
         break;
       case 1:
+        viewState.setContactsTypeFilter(ContactTypeFilter.repeaters);
+        Navigator.pushReplacement(
+          context,
+          buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
+        );
+        break;
+      case 2:
+        viewState.setContactsTypeFilter(ContactTypeFilter.rooms);
+        Navigator.pushReplacement(
+          context,
+          buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
+        );
+        break;
+      case 3:
+        viewState.setContactsTypeFilter(ContactTypeFilter.sensors);
+        Navigator.pushReplacement(
+          context,
+          buildQuickSwitchRoute(const ContactsScreen(hideBackButton: true)),
+        );
+        break;
+      case 4:
         Navigator.pushReplacement(
           context,
           buildQuickSwitchRoute(const ChannelsScreen(hideBackButton: true)),

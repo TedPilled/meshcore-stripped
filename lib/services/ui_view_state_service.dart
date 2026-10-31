@@ -28,7 +28,7 @@ class UiViewStateService extends ChangeNotifier {
   bool _contactsSearchExpanded = false;
   ContactSortOption _contactsSortOption = ContactSortOption.lastSeen;
   bool _contactsShowUnreadOnly = false;
-  ContactTypeFilter _contactsTypeFilter = ContactTypeFilter.all;
+  ContactTypeFilter _contactsTypeFilter = ContactTypeFilter.users;
 
   String _channelsSearchText = '';
   ChannelSortOption _channelsSortOption = ChannelSortOption.manual;
@@ -69,7 +69,7 @@ class UiViewStateService extends ChangeNotifier {
     if (typeStr != null) {
       _contactsTypeFilter = ContactTypeFilter.values.firstWhere(
         (e) => e.name == typeStr,
-        orElse: () => ContactTypeFilter.all,
+        orElse: () => ContactTypeFilter.users,
       );
     }
 

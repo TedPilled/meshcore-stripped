@@ -69,6 +69,34 @@ class ContactsScreen extends StatefulWidget {
 
 class _ContactsScreenState extends State<ContactsScreen>
     with DisconnectNavigationMixin {
+  String _emptyContactsTitle(ContactTypeFilter filter) {
+    switch (filter) {
+      case ContactTypeFilter.repeaters:
+        return 'No repeaters in list';
+      case ContactTypeFilter.rooms:
+        return 'No room servers in list';
+      case ContactTypeFilter.sensors:
+        return 'No sensor devices in list';
+      case ContactTypeFilter.users:
+      case ContactTypeFilter.all:
+      default:
+        return 'No contacts in list';
+    }
+  }
+
+  IconData _emptyContactsIcon(ContactTypeFilter filter, String searchText) {
+    if (searchText.isNotEmpty) return Icons.search_off;
+    switch (filter) {
+      case ContactTypeFilter.repeaters:
+        return Icons.cell_tower;
+      case ContactTypeFilter.rooms:
+        return Icons.meeting_room_outlined;
+      case ContactTypeFilter.sensors:
+        return Icons.sensors;
+      default:
+        return Icons.people_outline;
+    }
+  }
   final TextEditingController _searchController = TextEditingController();
   final ContactGroupStore _groupStore = ContactGroupStore();
   MeshCoreConnector? _scopeSyncConnector;
@@ -400,12 +428,13 @@ class _ContactsScreenState extends State<ContactsScreen>
       return const SizedBox.shrink();
     }
 
+    final viewState = context.watch<UiViewStateService>();
     final allowBack = !connector.isConnected;
     return PopScope(
       canPop: allowBack,
       child: Scaffold(
         appBar: AppBar(
-          title: AppBarTitle(context.l10n.contacts_title),
+          title: AppBarTitle(_contactsAppBarTitle(context, viewState.contactsTypeFilter)),
           automaticallyImplyLeading: !widget.hideBackButton,
           bottom: const SyncProgressAppBarBottom(),
           actions: [
@@ -530,7 +559,7 @@ class _ContactsScreenState extends State<ContactsScreen>
         bottomNavigationBar: SafeArea(
           top: false,
           child: QuickSwitchBar(
-            selectedIndex: 0,
+            selectedIndex: _quickSwitchIndex(viewState.contactsTypeFilter),
             onDestinationSelected: (index) =>
                 _handleQuickSwitch(index, context),
             contactsUnreadCount: connector.getTotalContactsUnreadCount(),
@@ -891,6 +920,9 @@ class _ContactsScreenState extends State<ContactsScreen>
               : "",
         );
         break;
+      case ContactTypeFilter.sensors:
+        hintText = "${context.l10n.repeater_sensors} (${filteredAndSorted.length})";
+        break;
       case ContactTypeFilter.favorites:
         hintText = context.l10n.contacts_searchFavorites(
           filteredAndSorted.length,
@@ -1075,10 +1107,13 @@ class _ContactsScreenState extends State<ContactsScreen>
                             ),
                           ),
                           child: EmptyState(
-                            icon: Icons.search_off,
+                            icon: _emptyContactsIcon(
+                              viewState.contactsTypeFilter,
+                              viewState.contactsSearchText,
+                            ),
                             title: viewState.contactsShowUnreadOnly
                                 ? context.l10n.contacts_noUnreadContacts
-                                : context.l10n.contacts_noContactsFound,
+                                : _emptyContactsTitle(viewState.contactsTypeFilter),
                           ),
                         ),
                       ],
@@ -1228,6 +1263,8 @@ class _ContactsScreenState extends State<ContactsScreen>
         return contact.type == advTypeRepeater;
       case ContactTypeFilter.rooms:
         return contact.type == advTypeRoom;
+      case ContactTypeFilter.sensors:
+        return contact.type == advTypeSensor;
     }
   }
 
@@ -1264,16 +1301,54 @@ class _ContactsScreenState extends State<ContactsScreen>
     return null;
   }
 
+  int _quickSwitchIndex(ContactTypeFilter filter) {
+    switch (filter) {
+      case ContactTypeFilter.repeaters:
+        return 1;
+      case ContactTypeFilter.rooms:
+        return 2;
+      case ContactTypeFilter.sensors:
+        return 3;
+      default:
+        return 0;
+    }
+  }
+
+  String _contactsAppBarTitle(BuildContext context, ContactTypeFilter filter) {
+    switch (filter) {
+      case ContactTypeFilter.repeaters:
+        return context.l10n.listFilter_repeaters;
+      case ContactTypeFilter.rooms:
+        return 'Rooms';
+      case ContactTypeFilter.sensors:
+        return context.l10n.repeater_sensors;
+      default:
+        return context.l10n.contacts_title;
+    }
+  }
+
   void _handleQuickSwitch(int index, BuildContext context) {
-    if (index == 0) return;
+    final viewState = context.read<UiViewStateService>();
     switch (index) {
+      case 0:
+        viewState.setContactsTypeFilter(ContactTypeFilter.users);
+        break;
       case 1:
+        viewState.setContactsTypeFilter(ContactTypeFilter.repeaters);
+        break;
+      case 2:
+        viewState.setContactsTypeFilter(ContactTypeFilter.rooms);
+        break;
+      case 3:
+        viewState.setContactsTypeFilter(ContactTypeFilter.sensors);
+        break;
+      case 4:
         Navigator.pushReplacement(
           context,
           buildQuickSwitchRoute(const ChannelsScreen(hideBackButton: true)),
         );
         break;
-      case 2:
+      case 5:
         Navigator.pushReplacement(
           context,
           buildQuickSwitchRoute(const MapScreen(hideBackButton: true)),
